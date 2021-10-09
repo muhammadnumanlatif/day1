@@ -1,6 +1,6 @@
 # day1
 
-A new Flutter project.
+90 Days of flutter course
 
 ## Getting Started
 
