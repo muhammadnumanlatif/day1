@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:day1/models/catalog_model.dart';
-import 'package:day1/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,81 +29,77 @@ class _HomePageState extends State<HomePage> {
     CatalogModel.items = List.from(productsData)
         .map<Item>((item) => Item.fromMap(item))
         .toList();
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Home App"),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 12,
-          ),
-          child: (CatalogModel.items != null && CatalogModel.items!.isNotEmpty)
-              ?GridView.builder(
-              itemCount: CatalogModel.items!.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                childAspectRatio: 2/3,
-              ),
-              itemBuilder:(context,index){
-                var item = CatalogModel.items![index];
-                return Card(
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: GridTile(
-                    header: Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.teal.shade100,
-                      ),
-                        child: Text(
-                            '${item.name}',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                          color: Colors.teal,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        ),
-                    ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.network('${item.image}'),
-                      ),
-                      footer: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.teal.shade100,
-                        ),
-                        child: Text(
-                            '\$ ${item.price}',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.teal,
-                            fontWeight: FontWeight.bold,
+        backgroundColor: Colors.white,
+        body: Container(
+          padding: Vx.m32,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // heading
+              'Catalog App'.text.xl5.bold.teal600.make(),
+              //sub heading
+              'Trendıng Products'.text.xl2.teal600.make(),
+              // logic for items
+              if (CatalogModel.items != null && CatalogModel.items!.isNotEmpty)
+                //listview
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                      itemCount: CatalogModel.items!.length,
+                      itemBuilder: (context, index) {
+                        var item = CatalogModel.items![index];
+                        //item
+                        return VxBox(
+                          child: Row(
+                            children: [
+                              //image
+                              Image.network('${item.image}').
+                              box.rounded.p8.white
+                                  .make().p16().h40(context).w40(context),
+                              //column
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  item.name!.text.lg.teal600.bold.make(),
+                                  item.desc!.text.teal500.make(),
+                                  ButtonBar(
+                                    alignment: MainAxisAlignment.spaceBetween,
+                                    buttonPadding: EdgeInsets.zero,
+                                    children: [
+                                      '\$ ${item.price}'.text.bold.teal600.make(),
+                                      ElevatedButton(
+                                          onPressed: (){},
+                                          child: 'Buy'.text.make(),
+                                        style: ButtonStyle(
+                                          shape: MaterialStateProperty.all(
+                                            StadiumBorder()
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ).pOnly(right: 8),
+                                ],
+                              ).expand(),
+                            ],
                           ),
-                        ),
-                      ),
-                  ),
-                );
-              }
-          )
-              : Center(
+                        ).teal100.rounded.square(150).make().py16();
+                      }),
+                )
+              else
+                Center(
                   child: CircularProgressIndicator(),
                 ),
+            ],
+          ),
         ),
-        drawer: MyDrawer(),
       ),
     );
   }
