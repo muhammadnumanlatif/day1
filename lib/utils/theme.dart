@@ -10,7 +10,7 @@ class MyTheme{
     appBarTheme: AppBarTheme(
       color: Colors.teal,
       iconTheme: IconThemeData(
-        color: Colors.white,
+        color: Colors.teal,
       ),
       titleTextStyle: TextStyle(
         color: Colors.white,

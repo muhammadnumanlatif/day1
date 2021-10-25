@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:day1/models/catalog_model.dart';
+import 'package:day1/pages/home_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -37,6 +38,7 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
+
         body: Container(
           padding: Vx.m32,
           child: Column(
@@ -56,41 +58,55 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (context, index) {
                         var item = CatalogModel.items![index];
                         //item
-                        return VxBox(
-                          child: Row(
-                            children: [
-                              //image
-                              Image.network('${item.image}').
-                              box.rounded.p8.white
-                                  .make().p16().h40(context).w40(context),
-                              //column
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                        return InkWell(
+                            onTap: (){
+                              Navigator.push(
+                                context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeDetailPage(item: item,)
+                              ),
+                              );
+                            },
+                            child: VxBox(
+                              child: Row(
                                 children: [
-                                  item.name!.text.lg.teal600.bold.make(),
-                                  item.desc!.text.teal500.make(),
-                                  ButtonBar(
-                                    alignment: MainAxisAlignment.spaceBetween,
-                                    buttonPadding: EdgeInsets.zero,
+                                  //image
+                                  Hero(
+                                    tag: Key('${item.id}'),
+                                    child: Image.network('${item.image}').
+                                    box.rounded.p8.white
+                                        .make().p16().h40(context).w40(context),
+                                  ),
+                                  //column
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      '\$ ${item.price}'.text.bold.teal600.make(),
-                                      ElevatedButton(
-                                          onPressed: (){},
-                                          child: 'Buy'.text.make(),
-                                        style: ButtonStyle(
-                                          shape: MaterialStateProperty.all(
-                                            StadiumBorder()
+                                      item.name!.text.lg.teal600.bold.make(),
+                                      item.desc!.text.teal500.make(),
+                                      ButtonBar(
+                                        alignment: MainAxisAlignment.spaceBetween,
+                                        buttonPadding: EdgeInsets.zero,
+                                        children: [
+                                          '\$ ${item.price}'.text.bold.teal600.make(),
+                                          ElevatedButton(
+                                              onPressed: (){},
+                                              child: 'Buy'.text.make(),
+                                            style: ButtonStyle(
+                                              shape: MaterialStateProperty.all(
+                                                StadiumBorder()
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
+                                        ],
+                                      ).pOnly(right: 8),
                                     ],
-                                  ).pOnly(right: 8),
+                                  ).expand(),
                                 ],
-                              ).expand(),
-                            ],
-                          ),
-                        ).teal100.rounded.square(150).make().py16();
+                              ),
+                            ).teal100.rounded.square(150).make().py16(),
+
+                        );
                       }),
                 )
               else
