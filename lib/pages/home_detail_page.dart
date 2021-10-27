@@ -17,7 +17,6 @@ class HomeDetailPage extends StatelessWidget {
         ),
         bottomNavigationBar: ButtonBar(
           alignment: MainAxisAlignment.spaceBetween,
-          buttonPadding: EdgeInsets.zero,
           children: [
             '\$ ${item!.price}'.text.xl3.bold.teal600.make(),
             ElevatedButton(
@@ -30,7 +29,7 @@ class HomeDetailPage extends StatelessWidget {
               ),
             ).wh(100, 50),
           ],
-        ).pOnly(right: 12,left: 12, top: 12, bottom: 12),
+        ),
         body: Column(
           children: [
             Hero(
@@ -56,6 +55,8 @@ class HomeDetailPage extends StatelessWidget {
                       45.heightBox,
                       item!.name!.text.xl3.teal600.bold.make(),
                       item!.desc!.text.xl.teal600.make(),
+                      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident similique accusantium nemo autem. Veritatisobcaecati tenetur iure eius earum ut molestias architecto voluptate aliquamnihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit,tenetur error, harum nesciunt ipsum debitis quas aliquid."
+                          .text.teal600.make().p16(),
                     ],
                   ),
                 ),

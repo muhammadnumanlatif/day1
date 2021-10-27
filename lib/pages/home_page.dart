@@ -38,7 +38,12 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            Navigator.pushNamed(context, '/cart');
+          },
+          child: Icon(Icons.shopping_cart),
+        ),
         body: Container(
           padding: Vx.m32,
           child: Column(
