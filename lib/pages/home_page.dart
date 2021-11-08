@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:day1/models/cart_model.dart';
 import 'package:day1/models/catalog_model.dart';
 import 'package:day1/pages/home_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +9,14 @@ import 'package:velocity_x/velocity_x.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+
   //*initialize at first during running of app
   @override
   void initState() {
@@ -37,8 +40,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).canvasColor,
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
           onPressed: (){
             Navigator.pushNamed(context, '/cart');
           },
@@ -50,9 +54,13 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // heading
-              'Catalog App'.text.xl5.bold.teal600.make(),
+              'Catalog App'.text.xl5.bold.color(
+                Theme.of(context).primaryColor
+              ).make(),
               //sub heading
-              'Trendıng Products'.text.xl2.teal600.make(),
+              'Trendıng Products'.text.xl2.color(
+                  Theme.of(context).primaryColor
+              ).make(),
               // logic for items
               if (CatalogModel.items != null && CatalogModel.items!.isNotEmpty)
                 //listview
@@ -61,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                     shrinkWrap: true,
                       itemCount: CatalogModel.items!.length,
                       itemBuilder: (context, index) {
-                        var item = CatalogModel.items![index];
+                        var item = CatalogModel.getItemByPosition(index);
                         //item
                         return InkWell(
                             onTap: (){
@@ -79,7 +87,9 @@ class _HomePageState extends State<HomePage> {
                                   Hero(
                                     tag: Key('${item.id}'),
                                     child: Image.network('${item.image}').
-                                    box.rounded.p8.white
+                                    box.rounded.p8.color(
+                                      Theme.of(context).canvasColor
+                                    )
                                         .make().p16().h40(context).w40(context),
                                   ),
                                   //column
@@ -87,29 +97,29 @@ class _HomePageState extends State<HomePage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      item.name!.text.lg.teal600.bold.make(),
-                                      item.desc!.text.teal500.make(),
+                                      item.name!.text.color(
+                                          Theme.of(context).primaryColor
+                                      ).bold.make(),
+                                      item.desc!.text.color(
+                                          Theme.of(context).primaryColor
+                                      ).make(),
                                       ButtonBar(
                                         alignment: MainAxisAlignment.spaceBetween,
                                         buttonPadding: EdgeInsets.zero,
                                         children: [
-                                          '\$ ${item.price}'.text.bold.teal600.make(),
-                                          ElevatedButton(
-                                              onPressed: (){},
-                                              child: 'Buy'.text.make(),
-                                            style: ButtonStyle(
-                                              shape: MaterialStateProperty.all(
-                                                StadiumBorder()
-                                              ),
-                                            ),
-                                          ),
+                                          '\$ ${item.price}'.text.bold.color(
+                                              Theme.of(context).primaryColor
+                                          ).make(),
+                                          AddToCart(item: item)
                                         ],
                                       ).pOnly(right: 8),
                                     ],
                                   ).expand(),
                                 ],
                               ),
-                            ).teal100.rounded.square(150).make().py16(),
+                            ).color(
+                              Theme.of(context).cardColor
+                            ).rounded. square(150).make().py16(),
 
                         );
                       }),
@@ -125,3 +135,39 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+class AddToCart extends StatefulWidget {
+
+  AddToCart({
+    Key? key, this.item,
+  }) : super(key: key);
+
+  final Item? item;
+
+  @override
+  State<AddToCart> createState() => _AddToCartState();
+}
+
+class _AddToCartState extends State<AddToCart> {
+  bool isAdded = false;
+  final _catalog = CatalogModel();
+  final _cart = CartModel();
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: (){
+        isAdded = isAdded.toggle();
+        //    _cart.catalogModel=_catalog;
+        _cart.add(widget.item!);
+        setState(() {});
+      },
+      child : isAdded ? Icon(Icons.done): 'Add'.text.make(),
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all(
+            StadiumBorder()
+        ),
+      ),
+    );
+  }
+}
+

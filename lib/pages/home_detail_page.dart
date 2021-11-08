@@ -1,4 +1,6 @@
+import 'package:day1/models/cart_model.dart';
 import 'package:day1/models/catalog_model.dart';
+import 'package:day1/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -9,25 +11,22 @@ class HomeDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Vx.white,
+        backgroundColor: Theme.of(context).canvasColor,
         appBar: AppBar(
-          backgroundColor: Vx.white,
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
           elevation: 0,
           toolbarHeight: 35,
+          title: item!.name!.text.xl3.color(
+              Theme.of(context).primaryColor
+          ).bold.make(),
         ),
         bottomNavigationBar: ButtonBar(
           alignment: MainAxisAlignment.spaceBetween,
           children: [
-            '\$ ${item!.price}'.text.xl3.bold.teal600.make(),
-            ElevatedButton(
-              onPressed: (){},
-              child: 'Buy'.text.make(),
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(
-                    StadiumBorder()
-                ),
-              ),
-            ).wh(100, 50),
+            '\$ ${item!.price}'.text.xl3.bold.color(
+                Theme.of(context).primaryColor
+            ).make(),
+            AddToCart(item: item).wh(100, 50),
           ],
         ),
         body: Column(
@@ -48,21 +47,57 @@ class HomeDetailPage extends StatelessWidget {
                 child: Container(
                   width: context.screenWidth,
                   decoration: BoxDecoration(
-                    color: Colors.teal.shade100,
+                    color: Theme.of(context).cardColor,
                   ),
                   child: Column(
                     children: [
                       45.heightBox,
-                      item!.name!.text.xl3.teal600.bold.make(),
-                      item!.desc!.text.xl.teal600.make(),
+
+                      item!.desc!.text.xl.color(
+                          Theme.of(context).primaryColor
+                      ).make(),
                       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident similique accusantium nemo autem. Veritatisobcaecati tenetur iure eius earum ut molestias architecto voluptate aliquamnihil, eveniet aliquid culpa officia aut! Impedit sit sunt quaerat, odit,tenetur error, harum nesciunt ipsum debitis quas aliquid."
-                          .text.teal600.make().p16(),
+                          .text.color(
+                          Theme.of(context).primaryColor
+                      ).make().p16(),
                     ],
                   ),
                 ),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class AddToCart extends StatefulWidget {
+  AddToCart({
+    Key? key, this.item,
+  }) : super(key: key);
+final Item? item;
+  @override
+  State<AddToCart> createState() => _AddToCartState();
+}
+
+class _AddToCartState extends State<AddToCart> {
+  bool isAdded = false;
+  final _catalog = CatalogModel();
+  final _cart = CartModel();
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: (){
+        isAdded = isAdded.toggle();
+    //    _cart.catalogModel=_catalog;
+        _cart.add(widget.item!);
+        setState(() {});
+      },
+      child : isAdded ? Icon(Icons.done): 'Add'.text.make(),
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all(
+            StadiumBorder()
         ),
       ),
     );

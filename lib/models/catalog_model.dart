@@ -31,6 +31,23 @@ class Item {
 }
 
 class CatalogModel {
+
+  static final catModel = CatalogModel._internal();
+
+  CatalogModel._internal();
+
+  factory CatalogModel()=>catModel;
+
+
   static List<Item>? items;
+
+ Item getItemById(int id){
+   return items!.firstWhere((item) => item.id == id);
+  }
+
+ static Item getItemByPosition(int index){
+    return items![index];
+  }
+
 }
 

@@ -7,21 +7,37 @@ class MyTheme{
   static ThemeData get lightTheme => ThemeData(
     primarySwatch: Colors.teal,
     fontFamily: GoogleFonts.aBeeZee().fontFamily,
+    cardColor: Colors.teal.shade100,
+    canvasColor: whiteColor,
     appBarTheme: AppBarTheme(
-      color: Colors.teal,
+      backgroundColor: Colors.white,
       iconTheme: IconThemeData(
         color: Colors.teal,
       ),
       titleTextStyle: TextStyle(
-        color: Colors.white,
+        color: Colors.teal,
       ),
     ),
   );
 
   //dark Theme
   static ThemeData get darkTheme => ThemeData(
-    brightness: Brightness.dark,
-    fontFamily: GoogleFonts.aBeeZee().fontFamily,
+    primarySwatch: Colors.grey,
+    fontFamily: GoogleFonts.abel().fontFamily,
+    cardColor: Colors.grey.shade700,
+    canvasColor: Colors.grey.shade800,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.grey.shade700,
+      iconTheme: IconThemeData(
+        color: Colors.grey,
+      ),
+      titleTextStyle: TextStyle(
+        color: Colors.grey,
+      ),
+    ),
   );
+
+  static Color whiteColor = Colors.white;
+      static Color darkGreyColor = Colors.grey.shade800;
 
 }

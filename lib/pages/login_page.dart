@@ -1,3 +1,4 @@
+import 'package:day1/utils/theme.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -34,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: MyTheme.whiteColor,
         body: SingleChildScrollView(
           child: Form(
             key: _formKey,
