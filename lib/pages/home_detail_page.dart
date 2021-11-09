@@ -1,6 +1,7 @@
 import 'package:day1/models/cart_model.dart';
 import 'package:day1/models/catalog_model.dart';
 import 'package:day1/utils/theme.dart';
+import 'package:day1/widgets/add_to_cart_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -66,38 +67,6 @@ class HomeDetailPage extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class AddToCart extends StatefulWidget {
-  AddToCart({
-    Key? key, this.item,
-  }) : super(key: key);
-final Item? item;
-  @override
-  State<AddToCart> createState() => _AddToCartState();
-}
-
-class _AddToCartState extends State<AddToCart> {
-  bool isAdded = false;
-  final _catalog = CatalogModel();
-  final _cart = CartModel();
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: (){
-        isAdded = isAdded.toggle();
-    //    _cart.catalogModel=_catalog;
-        _cart.add(widget.item!);
-        setState(() {});
-      },
-      child : isAdded ? Icon(Icons.done): 'Add'.text.make(),
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all(
-            StadiumBorder()
         ),
       ),
     );
