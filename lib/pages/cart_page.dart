@@ -1,3 +1,4 @@
+import 'package:day1/core/store.dart';
 import 'package:day1/models/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -5,10 +6,11 @@ import 'package:velocity_x/velocity_x.dart';
 class CartPage extends StatelessWidget {
    CartPage({Key? key}) : super(key: key);
 
-   final _cart = CartModel();
+//   final _cart = CartModel();
 
   @override
   Widget build(BuildContext context) {
+    final CartModel? _cart = (VxState.store as MyStore).cart;
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       appBar: AppBar(
@@ -20,7 +22,7 @@ class CartPage extends StatelessWidget {
       bottomNavigationBar: ButtonBar(
         alignment: MainAxisAlignment.spaceAround,
         children: [
-          '\$ ${_cart.totalPrice}'.text.xl5.color(
+          '\$ ${_cart!.totalPrice}'.text.xl5.color(
               Theme.of(context).primaryColor
           ).make(),
           ElevatedButton(
@@ -53,18 +55,12 @@ class CartPage extends StatelessWidget {
   }
 }
 
-class _CartList extends StatefulWidget {
-  const _CartList({Key? key}) : super(key: key);
-
-  @override
-  _CartListState createState() => _CartListState();
-}
-
-class _CartListState extends State<_CartList> {
-  final _cart = CartModel();
+class _CartList extends StatelessWidget {
+  //final _cart = CartModel();
   @override
   Widget build(BuildContext context) {
-    return _cart.items!.isEmpty
+    final CartModel? _cart = (VxState.store as MyStore).cart;
+    return _cart!.items!.isEmpty
         ? "Cart is Empty".text.xl3.color(
         Theme.of(context).primaryColor
     ).makeCentered()
@@ -76,7 +72,6 @@ class _CartListState extends State<_CartList> {
           trailing: IconButton(
             onPressed: (){
               _cart.remove(_cart.items![index]);
-              setState(() {});
             },
             icon: Icon(Icons.remove_circle_outline),
           ),
