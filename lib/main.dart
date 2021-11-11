@@ -10,7 +10,10 @@ import '/utils/theme.dart';
 
 void main() {
   runApp(
-    VxState(store: MyStore(), child: MyApp()),
+    VxState(
+        store: MyStore(),
+        child: MyApp(),
+    ),
   );
 }
 

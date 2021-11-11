@@ -22,9 +22,15 @@ class CartPage extends StatelessWidget {
       bottomNavigationBar: ButtonBar(
         alignment: MainAxisAlignment.spaceAround,
         children: [
-          '\$ ${_cart!.totalPrice}'.text.xl5.color(
-              Theme.of(context).primaryColor
-          ).make(),
+          VxBuilder(
+              builder: (context,_,status){
+                return '\$ ${_cart!.totalPrice}'.
+                text.xl5.color(
+                    Theme.of(context).primaryColor
+                ).make();
+              },
+              mutations: {RemoveMutation},
+                       ),
           ElevatedButton(
             onPressed: (){
               ScaffoldMessenger.of(context).showSnackBar(
@@ -60,6 +66,7 @@ class _CartList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CartModel? _cart = (VxState.store as MyStore).cart;
+    VxState.watch(context, on: [RemoveMutation]);
     return _cart!.items!.isEmpty
         ? "Cart is Empty".text.xl3.color(
         Theme.of(context).primaryColor
@@ -71,7 +78,7 @@ class _CartList extends StatelessWidget {
           leading: Icon(Icons.done),
           trailing: IconButton(
             onPressed: (){
-              _cart.remove(_cart.items![index]);
+              RemoveMutation(_cart.items![index]);
             },
             icon: Icon(Icons.remove_circle_outline),
           ),
