@@ -1,12 +1,14 @@
 import 'dart:convert';
 
+import 'package:day1/core/store.dart';
 import 'package:day1/models/cart_model.dart';
 import 'package:day1/models/catalog_model.dart';
 import 'package:day1/pages/home_detail_page.dart';
 import 'package:day1/widgets/add_to_cart_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,7 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
 
-
+  final url = "https://jsonkeeper.com/b/4JNQ";
   //*initialize at first during running of app
   @override
   void initState() {
@@ -27,7 +29,9 @@ class _HomePageState extends State<HomePage> {
 
   //*function to load json data2
   loadData() async {
-    var catalogJson = await rootBundle.loadString('assets/files/catalog.json');
+    //var catalogJson = await rootBundle.loadString('assets/files/catalog.json');
+    final response = await http.get(Uri.parse(url));
+    final catalogJson = response.body;
     var decodeData = jsonDecode(catalogJson);
     var productsData = decodeData['products'];
 
@@ -39,15 +43,27 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _cart = (VxState.store as MyStore).cart;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).canvasColor,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
-          onPressed: (){
-            Navigator.pushNamed(context, '/cart');
-          },
-          child: Icon(Icons.shopping_cart),
+        floatingActionButton: VxBuilder(
+          mutations: {AddMutation,RemoveMutation},
+          builder:(ctx,_,status)=> FloatingActionButton(
+            backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
+            onPressed: (){
+              Navigator.pushNamed(context, '/cart');
+            },
+            child: Icon(Icons.shopping_cart),
+          ).badge(
+            color: Theme.of(context).primaryColor.withOpacity(0.1),
+            size: 30,
+            count: _cart!.items!.length,
+            textStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).canvasColor
+            ),
+          ),
         ),
         body: Container(
           padding: Vx.m32,
@@ -126,8 +142,8 @@ class _HomePageState extends State<HomePage> {
                       }),
                 )
               else
-                Center(
-                  child: CircularProgressIndicator(),
+                const Center(
+                  child: LinearProgressIndicator(),
                 ),
             ],
           ),

@@ -24,7 +24,7 @@ class CartPage extends StatelessWidget {
         children: [
           VxBuilder(
               builder: (context,_,status){
-                return '\$ ${_cart!.totalPrice}'.
+               return '\$ ${_cart!.totalPrice}'.
                 text.xl5.color(
                     Theme.of(context).primaryColor
                 ).make();

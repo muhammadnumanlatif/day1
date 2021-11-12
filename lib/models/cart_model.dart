@@ -5,16 +5,16 @@ import 'package:velocity_x/velocity_x.dart';
 class CartModel {
 
   //catalog field
-  CatalogModel? _catalog;
+  final CatalogModel? _catalog = CatalogModel();
 
   // collections of ids from item
   final List<int>? _itemIds = [];
 
-  CatalogModel? get catalog => _catalog;
+  //CatalogModel? get catalog => _catalog;
 
-  set catalog(CatalogModel? newCatalog){
-    _catalog=newCatalog;
-  }
+ // set catalog(CatalogModel? newCatalog){
+  //  _catalog=newCatalog;
+ // }
 
  //get items in the cart
 List<Item>? get items => _itemIds!.map(
